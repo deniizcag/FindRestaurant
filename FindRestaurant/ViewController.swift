@@ -10,7 +10,6 @@ import UIKit
 import MapKit
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, CLLocationManagerDelegate, MKMapViewDelegate,RouteToRestaurantDelegate {
-   
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
@@ -22,27 +21,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var locValue: CLLocationCoordinate2D!
     
     override func viewDidLoad() {
-        
-        mapView.delegate = self
-        
         super.viewDidLoad()
-        checkLocationServices()
         
-        
-        
-        locationManager.delegate = self
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        
-        
+        if let location = configureLocationManager()
+{
+            fetchRestaurants(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        }
+        configuretableView()
         
     }
     
+    func configureLocationManager() -> CLLocation? {
+        
+        mapView.delegate = self
+        locationManager.delegate = self
+        let location = checkLocationServices()
+        return location
+    }
     
-    func fetchRestaurants(latitude: String,longitude: String) {
+    func configuretableView() {
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+    }
+    
+    func fetchRestaurants(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         DispatchQueue.main.async {
-            NetworkManager.shared.getRestaurants(latitude: latitude, longitude: longitude) { (res) in
+            NetworkManager.shared.getRestaurants(latitude: String(latitude), longitude: String(longitude)) { (res) in
                 if let res = res {
                     self.restaurants = res
                     DispatchQueue.main.async {
@@ -65,23 +71,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
     }
-    func checkLocationServices() {
+    func checkLocationServices() ->CLLocation? {
         
-        if let location = locationManager.location {
-            let lat = String(location.coordinate.latitude)
-            let long = String(location.coordinate.longitude)
-            fetchRestaurants(latitude: lat, longitude: long)
-            
-        }
-        else {
-            showAlert()
-        }
+      
         if CLLocationManager.locationServicesEnabled() {
             
             checkLocationAuthorization()
         } else {
             showAlert()
         }
+        return locationManager.location
     }
     
     func checkLocationAuthorization() {
@@ -152,8 +151,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     func distanceBetweenTwoPoints(location1: CLLocation,location2: CLLocation) -> CLLocationDistance {
-
-
+        
+        
         let distanceInMeters = location1.distance(from: location2)
         
         return distanceInMeters
