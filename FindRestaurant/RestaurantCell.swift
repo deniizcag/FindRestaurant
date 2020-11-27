@@ -39,7 +39,7 @@ class RestaurantCell: UITableViewCell {
         name.text = restaurant.name
         address.text = restaurant.location.locality
         distanceLabel.text = String(format: "%.f",distance) + " m"
-        minuteLabel.text = String(format: "%.1f",((distance / 1000) / 3.1) * 60 ) + " min"
+        minuteLabel.text = String(format: "%.1f",((distance / 1000) / 4.8) * 60 ) + " min"
     }
     
     
