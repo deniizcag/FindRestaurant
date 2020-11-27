@@ -32,8 +32,6 @@ class NetworkManager {
             guard let data = data else {
                 return
             }
-            print("lşsak")
-            print(data)
             
             
             
@@ -48,7 +46,6 @@ class NetworkManager {
             completed(restaurants)
             
             
-            print(restaurants)
         }.resume()
         
     }
