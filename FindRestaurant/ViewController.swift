@@ -17,14 +17,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     var restaurants =  [Restaurant]()
+    var distances = [CLLocationDistance] ()
     let locationManager = CLLocationManager()
     var locValue: CLLocationCoordinate2D!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let location = configureLocationManager()
-{
+        if let location = configureLocationManager() {
             fetchRestaurants(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         }
         configuretableView()
@@ -50,10 +50,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         DispatchQueue.main.async {
             NetworkManager.shared.getRestaurants(latitude: String(latitude), longitude: String(longitude)) { (res) in
                 if let res = res {
-                    self.restaurants = res
                     DispatchQueue.main.async {
+                        self.restaurants = res
                         self.tableView.reloadData()
                         self.addPinToRestaurants(restaurants: self.restaurants)
+                        self.distances = self.getDistances(restaurants: self.restaurants)
                     }
                 }
             }
@@ -73,7 +74,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     func checkLocationServices() ->CLLocation? {
         
-      
         if CLLocationManager.locationServicesEnabled() {
             
             checkLocationAuthorization()
@@ -104,7 +104,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     func addPinToRestaurants(restaurants: [Restaurant]) {
-        print(restaurants.count)
         for restaurant in restaurants {
             
             let lat = CLLocationDegrees(restaurant.location.latitude)!
@@ -150,12 +149,18 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return renderer
     }
     
-    func distanceBetweenTwoPoints(location1: CLLocation,location2: CLLocation) -> CLLocationDistance {
+    func getDistances(restaurants: [Restaurant]) -> [CLLocationDistance] {
+        var distances = [CLLocationDistance]()
+        print("getting distances")
+        for restaurant in restaurants {
+            let resLocation = CLLocation(latitude: CLLocationDegrees(exactly: Double(restaurant.location.latitude)!)!, longitude: CLLocationDegrees(exactly: Double(restaurant.location.longitude)!)!)
+            let distance = locationManager.location?.distance(from: resLocation)
+            distances.append(distance!)
+        }
         
         
-        let distanceInMeters = location1.distance(from: location2)
-        
-        return distanceInMeters
+        return distances
+
     }
 }
 
@@ -191,15 +196,11 @@ extension ViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantCellID") as! RestaurantCell
         let restaurant = restaurants[indexPath.row]
-        cell.set(restaurant: restaurant)
+        let distance   = distances[indexPath.row]
+        cell.set(restaurant: restaurant,distance: distance)
         cell.delegate = self
         return cell
         
-    }
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        self.locValue = locValue
-        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
     
