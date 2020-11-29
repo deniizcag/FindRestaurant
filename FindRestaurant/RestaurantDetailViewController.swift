@@ -9,22 +9,39 @@
 import UIKit
 
 class RestaurantDetailViewController: UIViewController {
-
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var cuisines: UILabel!
+    @IBOutlet weak var ratingPoint: UILabel!
+    
+    @IBOutlet weak var address: UILabel!
+    
+    @IBOutlet weak var cost: UILabel!
+    
+    @IBOutlet weak var ratingText: UILabel!
+    
+    var restaurant: Restaurant!
+    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        print(restaurant.name)
+        setUI()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func setUI() {
+        
+        name.text = restaurant.name
+        address.text = restaurant.location.address
+        cuisines.text = restaurant.cuisines
+        cost.text = restaurant.currency +  String(restaurant.averageCostForTwo)
+        ratingText.text = restaurant.userRating.ratingText + ","
+        ratingPoint.text = restaurant.userRating.aggregateRating
+        
+        
     }
-    */
-
+    
+    
 }
