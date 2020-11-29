@@ -13,7 +13,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
-    var pin:AnnotationPin!
     
     
     var restaurants =  [Restaurant]()
@@ -37,6 +36,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         locationManager.delegate = self
         let location = checkLocationServices()
         return location
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = RestaurantDetailViewController(restaurant: restaurants[indexPath.row])
+        let navController = UINavigationController(rootViewController: vc)
+        
+        present(navController, animated: true)
     }
     
     func configuretableView() {
@@ -135,11 +140,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             annotationView!.canShowCallout = true
             
             annotationView!.annotation = annotation
+            
+            
             annotationView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            
             
         }
         return annotationView
     }
+    
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        for restaurant in restaurants {
+            if restaurant.name == view.annotation?.title {
+                let detailedRestaurant = restaurant
+                
+                
+                
+                let vc = RestaurantDetailViewController(restaurant: detailedRestaurant)
+                let navController = UINavigationController(rootViewController: vc)
+                
+                present(navController, animated: true)
+            }
+        }
+        
+        
+    }
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
@@ -160,7 +188,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         
         return distances
-
+        
     }
 }
 
