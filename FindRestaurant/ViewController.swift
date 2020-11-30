@@ -13,7 +13,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
-    
+    var selectedRestaurant: Restaurant!
     
     var restaurants =  [Restaurant]()
     var distances = [CLLocationDistance] ()
@@ -38,10 +38,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return location
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = RestaurantDetailViewController(restaurant: restaurants[indexPath.row])
-        let navController = UINavigationController(rootViewController: vc)
-        
-        present(navController, animated: true)
+        selectedRestaurant = restaurants[indexPath.row]
+          performSegue(withIdentifier: "goToDetail", sender: self)
     }
     
     func configuretableView() {
@@ -102,7 +100,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func centreOnUserLocation() {
         if let location = locationManager.location?.coordinate {
-            let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+            let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             let region = MKCoordinateRegion.init(center: location, span: span)
             mapView.setRegion(region, animated: true)
         }
@@ -149,19 +147,24 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return annotationView
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) { // segue başlamadan önce çalışacak fonksiyon
+        if segue.identifier == "goToDetail"{
+            print("klljlj")
+            // değişken gibi işleme tabi tutmak için yapıldı.
+            let destinationVC = segue.destination as! RestaurantDetailViewController // artık bu yapıya ait tüm özelliklere erişim mevcut hale geldi.
+            destinationVC.restaurant = self.selectedRestaurant
+            // ikinci ekrandaki name değişkeni ile birinci ekrandaki username değeri eşleştirildi.
+        }}
+    
+    
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
         for restaurant in restaurants {
             if restaurant.name == view.annotation?.title {
-                let detailedRestaurant = restaurant
-                
-                
-                
-                let vc = RestaurantDetailViewController(restaurant: detailedRestaurant)
-                let navController = UINavigationController(rootViewController: vc)
-                
-                present(navController, animated: true)
+                self.selectedRestaurant = restaurant
+                performSegue(withIdentifier: "goToDetail", sender: self)
+                break
             }
         }
         
