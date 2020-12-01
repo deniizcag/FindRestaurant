@@ -6,12 +6,41 @@
 //  Copyright © 2020 Deniz Cagilligecit. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager()
     
-    //at=51&lon=-0.1
+    func getImage(url: String, completed: @escaping (UIImage?)-> Void) {
+        
+        
+        guard let requestUrl = URL(string: url) else {
+            return
+        }
+
+        URLSession.shared.dataTask(with: requestUrl) { (data, response, error) in
+              guard let response = response as? HTTPURLResponse,response.statusCode == 200 else {
+                          return
+                      }
+                      if let _ = error {
+                          return
+                      }
+                      guard let data = data else {
+                          return
+                      }
+           if  let image = UIImage(data: data) {
+                completed(image)
+           }else {
+            completed(nil)
+            }
+            
+            
+            
+            
+        }.resume()
+       
+        
+    }
     
     func getRestaurants(latitude: String,longitude: String,completed: @escaping ([Restaurant]?) -> Void) {
         let urlString = "https://developers.zomato.com/api/v2.1/geocode?" + "lat="+latitude + "&lon=" + longitude
