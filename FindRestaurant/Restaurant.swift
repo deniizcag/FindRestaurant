@@ -44,7 +44,7 @@ class Restaurant: Decodable {
     var cuisines: String
     var userRating: Rating
     var location: Location
-    
+    var featuredImage: String
     
     
 
