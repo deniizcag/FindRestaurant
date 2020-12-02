@@ -53,7 +53,12 @@ class NetworkManager {
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse,response.statusCode == 200 else {
+                completed(nil)
                 return
+            }
+            
+            if response.statusCode == 400 {
+                completed(nil)
             }
             if let _ = error {
                 return
