@@ -26,6 +26,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         if let location = configureLocationManager() {
             fetchRestaurants(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         }
+        else {
+        }
         configuretableView()
         
     }
@@ -60,14 +62,20 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                         self.distances = self.getDistances(restaurants: self.restaurants)
                     }
                 }
+                else {
+                    DispatchQueue.main.async {
+                        self.showAlert(message: "There is no available restaurant nearby you.")
+
+                    }
+                }
             }
         }
         
     }
     
-    func showAlert() {
+    func showAlert(message:String) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Something went wrong!", message: "Please enable location services!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Something went wrong!", message: message, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             
             alert.addAction(action)
@@ -81,7 +89,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             
             checkLocationAuthorization()
         } else {
-            showAlert()
+            showAlert(message: "Please enable your location services!")
         }
         return locationManager.location
     }
@@ -94,7 +102,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             centreOnUserLocation()
         }
         else {
-            showAlert()
+            showAlert(message: "Please enable your location services!")
         }
     }
     
