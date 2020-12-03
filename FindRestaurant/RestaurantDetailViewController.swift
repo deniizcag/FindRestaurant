@@ -53,7 +53,7 @@ class RestaurantDetailViewController: UIViewController, SFSafariViewControllerDe
     
     
     func setUI() {
-
+        title = "Restaurant Detail Page"
         name.text = restaurant.name
         address.text = restaurant.location.address
         cuisines.text = restaurant.cuisines
