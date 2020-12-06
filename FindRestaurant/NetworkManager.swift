@@ -17,29 +17,27 @@ class NetworkManager {
         guard let requestUrl = URL(string: url) else {
             return
         }
-
+        
         URLSession.shared.dataTask(with: requestUrl) { (data, response, error) in
-              guard let response = response as? HTTPURLResponse,response.statusCode == 200 else {
-                          return
-                      }
-                      if let _ = error {
-                          return
-                      }
-                      guard let data = data else {
-                          return
-                      }
-           if  let image = UIImage(data: data) {
+            guard let response = response as? HTTPURLResponse,response.statusCode == 200 else {
+                return
+            }
+            if let _ = error {
+                return
+            }
+            guard let data = data else {
+                return
+            }
+            if  let image = UIImage(data: data) {
                 completed(image)
-           }else {
-            completed(nil)
+            }else {
+                completed(nil)
             }
             
             
             
             
         }.resume()
-       
-        
     }
     
     func getRestaurants(latitude: String,longitude: String,completed: @escaping ([Restaurant]?) -> Void) {
@@ -71,13 +69,19 @@ class NetworkManager {
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let res = try! decoder.decode(Restaurants.self, from: data)
-            var restaurants = [Restaurant]()
             
-            for restaurant in res.nearbyRestaurants {
-                restaurants.append(restaurant.restaurant)
+            do {
+                let res = try decoder.decode(Restaurants.self, from: data)
+                var restaurants = [Restaurant]()
+
+                for restaurant in res.nearbyRestaurants {
+                    restaurants.append(restaurant.restaurant)
+                }
+                completed(restaurants)
             }
-            completed(restaurants)
+            catch {
+                completed(nil)
+            }
             
             
         }.resume()
