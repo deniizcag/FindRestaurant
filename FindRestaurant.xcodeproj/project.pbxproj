@@ -47,34 +47,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2ADFAFBE257D205B008C9497 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		2ADFAFBF257D2066008C9497 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2ADFAFC0257D206C008C9497 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		2ADFAFC1257D208F008C9497 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
 		2AEC15B3256AC8270008D516 = {
 			isa = PBXGroup;
 			children = (
@@ -94,15 +66,11 @@
 		2AEC15BE256AC8270008D516 /* FindRestaurant */ = {
 			isa = PBXGroup;
 			children = (
-				2AEC15DF25740F540008D516 /* RestaurantDetailViewController.swift */,
 				2AEC15D3256AC9EA0008D516 /* Restaurant.swift */,
+				2AEC15DF25740F540008D516 /* RestaurantDetailViewController.swift */,
 				2AEC15C3256AC8270008D516 /* ViewController.swift */,
 				2AEC15D5256BEBDC0008D516 /* RestaurantCell.swift */,
 				2AEC15D9256EADB50008D516 /* NetworkManager.swift */,
-				2ADFAFC1257D208F008C9497 /* Managers */,
-				2ADFAFC0257D206C008C9497 /* Controller */,
-				2ADFAFBF257D2066008C9497 /* View */,
-				2ADFAFBE257D205B008C9497 /* Model */,
 				2AEC15BF256AC8270008D516 /* AppDelegate.swift */,
 				2AEC15C1256AC8270008D516 /* SceneDelegate.swift */,
 				2AEC15C5256AC8270008D516 /* Main.storyboard */,
