@@ -47,8 +47,8 @@ class NetworkManager {
         let url = URL(string: urlString)!
         var request = URLRequest(url: url)
         
-        
-        request.addValue("04dc87b89526e95ab973d01ab9fe7835", forHTTPHeaderField: "user-key")
+        let userkey = ""
+        request.addValue(userkey, forHTTPHeaderField: "user-key")
         
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
