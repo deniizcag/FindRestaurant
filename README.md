@@ -28,3 +28,23 @@
 <p>Get the Api key from <a href="https://developers.zomato.com/api?lang=en">Zomato API</a> and use it in NetworkManager.</p>
 
 
+
+
+<h1 id="images">Images</h1>
+
+<p>
+<img src="screenshots/homepage.png" alt="Trulli" width="350" height="720">
+    <img src="screenshots/pinnedrestaurant.png" alt="Trulli"  width="350" height="720"></p>
+    </p>
+    
+    
+<p>
+    <img src="screenshots/restaurantdetail.png" alt="Trulli" width="350" height="720">
+    <img src="screenshots/routetorestaurant.png" alt="Trulli"  width="350" height="720"></p>
+        </p>
+      
+
+<p>
+<img src="screenshots/safaripage.png" alt="Trulli" width="350" height="720">
+    </p>
+
