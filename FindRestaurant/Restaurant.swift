@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Location:Decodable {
+struct Location:Decodable {
     var address: String
     var locality: String
     var latitude: String
@@ -16,7 +16,7 @@ class Location:Decodable {
     
     
 }
-class Restaurants: Decodable {
+struct Restaurants: Decodable {
     var nearbyRestaurants: [resObject] {
         didSet  {
             print("ye")
@@ -25,17 +25,17 @@ class Restaurants: Decodable {
   
 }
 
-class Rating:Decodable {
+struct Rating:Decodable {
     var aggregateRating: String
     var ratingText: String
 
     
 }
-class resObject: Decodable {
+struct resObject: Decodable {
     var restaurant:Restaurant
 }
 
-class Restaurant: Decodable {
+struct Restaurant: Decodable {
     
     var url: String
     var name: String
